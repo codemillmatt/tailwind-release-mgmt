@@ -1,6 +1,6 @@
 GOOGLE_JSON_FILE=$APPCENTER_SOURCE_DIRECTORY/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/google-services.json
 
-touch GOOGLE_JSON_FILE
+touch $GOOGLE_JSON_FILE
 
 if [ -e "$GOOGLE_JSON_FILE" ] 
 then
