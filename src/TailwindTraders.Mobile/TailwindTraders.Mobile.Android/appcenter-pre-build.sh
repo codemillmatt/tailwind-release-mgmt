@@ -1,4 +1,4 @@
-GOOGLE_JSON_FILE=$APPCENTER_SOURCE_DIRECTORY/TailwindTraders.Mobile/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/google-services.json
+GOOGLE_JSON_FILE=$APPCENTER_SOURCE_DIRECTORY/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/google-services.json
 
 touch GOOGLE_JSON_FILE
 
@@ -26,7 +26,7 @@ fi
 ANDROID_APPCENTER_SECRET_PLACEHOLDER="< ENTER YOUR APP CENTER ANDROID SECRET HERE >"
 IOS_APPCENTER_SECRET_PLACEHOLDER="< ENTER YOUR APP CENTER IOS SECRET HERE >"
 
-APPCENTER_CONSTANT_FILE=$APPCENTER_SOURCE_DIRECTORY/TailwindTraders.Mobile/TailwindTraders.Mobile/TailwindTraders.Mobile/Helpers/AppCenterConstants.cs
+APPCENTER_CONSTANT_FILE=$APPCENTER_SOURCE_DIRECTORY/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Core/Helpers/AppCenterConstants.cs
 
 echo $APPCENTER_CONSTANT_FILE
 
