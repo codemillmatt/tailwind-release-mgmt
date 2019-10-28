@@ -1,14 +1,12 @@
 pool:
   name: Azure Pipelines
+  vmImage: 'macos-latest'
   demands:
   - msbuild
   - MSBuild
   - Xamarin.Android
   - JDK
 
-#Your build pipeline references an undefined variable named ‘Parameters.appFiles’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
-#Your build pipeline references a secret variable named ‘KeystorePassword’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
-#Your build pipeline references a secret variable named ‘KeystorePassword’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
 variables:
   BuildConfiguration: 'Release'
 
