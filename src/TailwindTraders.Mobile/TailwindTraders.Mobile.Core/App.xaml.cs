@@ -37,11 +37,13 @@ namespace TailwindTraders.Mobile
         {
             SetupPushNotifications();
 
+            AppCenter.LogLevel = LogLevel.Verbose;
+
             // Handle when your app starts
             AppCenter.Start($"ios={AppCenterConstants.iOSAppSecret};" +
                   $"android={AppCenterConstants.AndroidAppSecret}",
                   typeof(Analytics), typeof(Crashes), typeof(Push), typeof(Distribute));
-
+            
             Analytics.TrackEvent("Phoning Home");
            
             // Check to see if app crashed during last run
