@@ -1,27 +1,97 @@
-# Xamarin.Android
-# Build a Xamarin.Android project.
-# Add steps that test, sign, and distribute an app, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/xamarin
-
-trigger:
-- master
-
 pool:
-  vmImage: 'macos-latest'
+  name: Azure Pipelines
+  demands:
+  - msbuild
+  - MSBuild
+  - Xamarin.Android
+  - JDK
 
+#Your build pipeline references an undefined variable named ‘Parameters.appFiles’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references a secret variable named ‘KeystorePassword’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references a secret variable named ‘KeystorePassword’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it secret. See https://go.microsoft.com/fwlink/?linkid=865972
 variables:
-  buildConfiguration: 'Release'
-  outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
+  BuildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.4.1'
   inputs:
-    restoreSolution: '**/*.sln'
+    versionSpec: 4.4.1
+
+- task: MSBuild@1
+  displayName: 'Restore NuGets'
+  inputs:
+    solution: src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/TailwindTraders.Mobile.Android.csproj
+    configuration: '$(BuildConfiguration)'
+    msbuildArguments: '-t:restore'
+
+- script: |
+   GOOGLE_JSON_FILE=$BUILD_SOURCESDIRECTORY/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/google-services.json
+   
+   touch $GOOGLE_JSON_FILE
+   
+   if [ -e "$GOOGLE_JSON_FILE" ] 
+   then
+       echo "Updating Google Json"
+       echo "$GOOGLE_JSON" > $GOOGLE_JSON_FILE
+       sed -i -e 's/\\"/'\"'/g' $GOOGLE_JSON_FILE
+   
+       echo "File content:"
+       cat $GOOGLE_JSON_FILE
+   fi
+  displayName: 'Google Json'
+
+- script: |
+   echo "Loading App Center Secrets"
+   
+   if [ ! -n "$ANDROID_APPCENTER_SECRET" ] || [ ! -n "$IOS_APPCENTER_SECRET" ]  ; then
+       echo "**** not all needed app center variables are set ****"
+       exit
+   fi
+   
+   ANDROID_APPCENTER_SECRET_PLACEHOLDER="< ENTER YOUR APP CENTER ANDROID SECRET HERE >"
+   IOS_APPCENTER_SECRET_PLACEHOLDER="< ENTER YOUR APP CENTER IOS SECRET HERE >"
+   
+   APPCENTER_CONSTANT_FILE=$Build_SourcesDirectory/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Core/Helpers/AppCenterConstants.cs
+   
+   echo $APPCENTER_CONSTANT_FILE
+   
+   if [ -e "$APPCENTER_CONSTANT_FILE" ]
+   then
+       echo "updating the android app center secrets"
+       sed -i ".bak" -e "s,$ANDROID_APPCENTER_SECRET_PLACEHOLDER,$ANDROID_APPCENTER_SECRET,g" $APPCENTER_CONSTANT_FILE
+   
+       echo "updating the ios app center secrets"
+       sed -i ".bak" -e "s,$IOS_APPCENTER_SECRET_PLACEHOLDER,$IOS_APPCENTER_SECRET,g" $APPCENTER_CONSTANT_FILE
+   
+       echo "the app center secrets file:"
+       cat $APPCENTER_CONSTANT_FILE
+   fi
+  displayName: 'Insert App Center Secrets'
+
+- task: vs-publisher-473885.motz-mobile-buildtasks.android-manifest-version.android-manifest-version@1
+  displayName: 'Bump Android Versions in src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/Properties/AndroidManifest.xml'
+  inputs:
+    sourcePath: src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/Properties/AndroidManifest.xml
 
 - task: XamarinAndroid@1
+  displayName: 'Build Droid'
   inputs:
-    projectFile: '**/*droid*.csproj'
-    outputDirectory: '$(outputDirectory)'
-    configuration: '$(buildConfiguration)'
+    projectFile: src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/TailwindTraders.Mobile.Android.csproj
+    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    configuration: '$(BuildConfiguration)'
+
+- task: AndroidSigning@3
+  displayName: 'Signing and aligning APK file(s) $(build.binariesdirectory)/$(BuildConfiguration)/*.apk'
+  inputs:
+    apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/*.apk'
+    apksignerKeystoreFile: 'd77a3e9f-7b5e-4010-b1ce-1b342d25c01f'
+    apksignerKeystorePassword: '$(KeystorePassword)'
+    apksignerKeystoreAlias: TailwindAppCenter
+    apksignerKeyPassword: '$(KeystorePassword)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.binariesdirectory)/$(BuildConfiguration)'
+  condition: succeededOrFailed()
