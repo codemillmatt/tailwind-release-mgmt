@@ -86,18 +86,7 @@ namespace TailwindTraders.Mobile
                     // If there is custom data associated with the notification,
                     // print the entries
                     var analyticsData = new Dictionary<string, string>();
-
-                    if (e.CustomData != null)
-                    {
-                        summary += "\n\tCustom data:\n";
-                        foreach (var key in e.CustomData.Keys)
-                        {
-                            summary += $"\t\t{key} : {e.CustomData[key]}\n";
-
-                            analyticsData.Add(key, e.CustomData[key]);
-                        }
-                    }
-
+                    
                     analyticsData.Add("title", e.Title);
                     analyticsData.Add("message", e.Message);
 
@@ -105,7 +94,13 @@ namespace TailwindTraders.Mobile
                     Analytics.TrackEvent("Push Received", analyticsData);
 
                     var snack = DependencyService.Get<IXSnack>();
-                    await snack.ShowMessageAsync(e.Title);                   
+                    //await snack.ShowMessageAsync("I'm here from a push");
+
+                    if (!string.IsNullOrEmpty(e.Title))
+                    {                        
+                        await snack.
+                    }
+
                 };
             }
 
