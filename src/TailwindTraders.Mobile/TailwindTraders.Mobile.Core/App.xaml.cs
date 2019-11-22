@@ -97,8 +97,8 @@ namespace TailwindTraders.Mobile
                     //await snack.ShowMessageAsync("I'm here from a push");
 
                     if (!string.IsNullOrEmpty(e.Title))
-                    {                        
-                        await snack.
+                    {
+                        await Shell.Current.DisplayAlert(e.Title, e.Message, "OK");
                     }
 
                 };
