@@ -51,7 +51,10 @@ namespace TailwindTraders.Mobile.ViewModels
                 var storage = new AzureStorageService();
                 var sas = await storage.GetSharedAccessSignature();
 
-                success = await storage.UploadPhoto(photoStream, sas);
+                if (!(string.IsNullOrWhiteSpace(sas)))
+                {
+                    success = await storage.UploadPhoto(photoStream, sas);
+                }
 
                 Shell.Current.FlyoutIsPresented = false;
             }
