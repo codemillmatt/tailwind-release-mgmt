@@ -1,0 +1,15 @@
+pool:
+  name: Azure Pipelines
+  demands:
+    - msbuild
+    - Xamarin.Android
+    - JDK
+
+variables:
+  BuildConfiguration: 'Release'
+
+steps:
+  - task: NuGetToolInstaller@0
+    displayName: 'Use NuGet 4.4.1'
+    inputs:
+      versionSpec: 4.4.1
