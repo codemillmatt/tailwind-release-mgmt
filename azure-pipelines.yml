@@ -1,6 +1,6 @@
 variables:
   BuildConfiguration: 'Release'
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: trued
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   skipComponentGovernanceDetection: true
 
@@ -31,7 +31,24 @@ jobs:
       inputs:
         solution: '**/*TailwindTraders.Mobile.Android.csproj'
         configuration: '$(BuildConfiguration)'
-        msbuildArguments: '-t:Restore'      
+        msbuildArguments: '-t:Restore'
+
+    - task: DownloadSecureFile@1
+      name: googleservices
+      inputs:
+        secureFile: 'google-services.json'
+
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(Agent.TempDirectory)'
+        Contents: 'google-services.json'
+        TargetFolder: '$(Build.SourcesDirectory)/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android'
+        OverWrite: true
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: 'cat $(Build.SourcesDirectory)/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/google-services.json'
 
     - task: XamarinAndroid@1
       displayName: 'Build Droid'
