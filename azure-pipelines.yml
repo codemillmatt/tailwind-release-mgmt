@@ -3,6 +3,8 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   skipComponentGovernanceDetection: true
+  ANDROID_APP_CENTER_SECRET: asdf
+  IOS_APP_CENTER_SECRET: asdf
 
 jobs:
   - job: 'AndroidBuild'
@@ -34,11 +36,13 @@ jobs:
         msbuildArguments: '-t:Restore'
 
     - task: DownloadSecureFile@1
+      displayName: 'Downloading google-services.json from Secure Storage'
       name: googleservices
       inputs:
         secureFile: 'google-services.json'
 
     - task: CopyFiles@2
+      displayName: 'Copying over google-services.json'
       inputs:
         SourceFolder: '$(Agent.TempDirectory)'
         Contents: 'google-services.json'
@@ -46,9 +50,14 @@ jobs:
         OverWrite: true
 
     - task: Bash@3
+      displayName: 'cat google-services.json'
       inputs:
         targetType: 'inline'
         script: 'cat $(Build.SourcesDirectory)/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/google-services.json'
+
+    - task: Bash@3
+      inputs:
+        filePath: '$(BUILD.SOURCESDIRECTORY)/appcenter-secrets-replace.sh'
 
     - task: XamarinAndroid@1
       displayName: 'Build Droid'
