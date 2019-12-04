@@ -48,12 +48,13 @@ jobs:
         OverWrite: true
 
     - task: Bash@3
-      displayName: 'cat google-services.json'
+      displayName: 'Catalog google-services.json'
       inputs:
         targetType: 'inline'
         script: 'cat $(Build.SourcesDirectory)/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/google-services.json'
 
     - task: Bash@3
+      displayName: 'Copy over App Center secrets'
       inputs:
         filePath: '$(BUILD.SOURCESDIRECTORY)/appcenter-secrets-replace.sh'
 
@@ -65,6 +66,15 @@ jobs:
         configuration: '$(BuildConfiguration)'
         jdkOption: 'JDKVersion'
       condition: succeeded()
+
+    - task: AndroidSigning@3
+      displayName: 'Sign Android'
+      inputs:
+        apkFiles: '**/*.apk'
+        apksignerKeystoreFile: 'TailwindAppCenter2.keystore'
+        apksignerKeystorePassword: '$(keystorePassword)'
+        apksignerKeystoreAlias: 'TailwindAppCeter'
+        apksignerKeyPassword: '$(keystorePassword)'
 
     - task: CopyFiles@2
       displayName: 'Copy APK file to staging'
