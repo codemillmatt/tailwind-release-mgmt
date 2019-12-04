@@ -3,8 +3,6 @@ variables:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   skipComponentGovernanceDetection: true
-  ANDROID_APP_CENTER_SECRET: asdf
-  IOS_APP_CENTER_SECRET: asdf
 
 jobs:
   - job: 'AndroidBuild'
@@ -66,20 +64,23 @@ jobs:
         outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
         configuration: '$(BuildConfiguration)'
         jdkOption: 'JDKVersion'
+      condition: succeeded()
 
     - task: CopyFiles@2
       displayName: 'Copy APK file to staging'
       inputs:
         SourceFolder: '$(build.binariesdirectory)/$(BuildConfiguration)'
         Contents: '**/*.apk'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'      
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'   
+      condition: succeeded()   
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Android APK'
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
-        publishLocation: 'Container'      
+        publishLocation: 'Container'    
+      condition: succeeded()  
 
   - job: 'iOSBuild'
     pool:
