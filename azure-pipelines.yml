@@ -24,16 +24,14 @@ jobs:
     - task: Boots@1
       displayName: 'Install Android 16.3'
       inputs:
-        uri: https://aka.ms/xamarin-android-commercial-d16-3-macos
-      condition: succeeded()
+        uri: https://aka.ms/xamarin-android-commercial-d16-3-macos      
 
     - task: MSBuild@1
       displayName: 'Restore NuGets'
       inputs:
         solution: '**/*TailwindTraders.Mobile.Android.csproj'
         configuration: '$(BuildConfiguration)'
-        msbuildArguments: '-t:Restore'
-      condition: succeeded()
+        msbuildArguments: '-t:Restore'      
 
     - task: XamarinAndroid@1
       displayName: 'Build Droid'
@@ -48,16 +46,14 @@ jobs:
       inputs:
         SourceFolder: '$(build.binariesdirectory)/$(BuildConfiguration)'
         Contents: '**/*.apk'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      condition: succeeded()
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'      
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Android APK'
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
-        publishLocation: 'Container'
-      condition: succeeded()
+        publishLocation: 'Container'      
 
   - job: 'iOSBuild'
     pool:
@@ -90,26 +86,26 @@ jobs:
         restoreSolution: '**/*TailwindTraders.iOS.sln'
         feedsToUse: 'select'
 
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: 'sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_18_1'
-
-    #- task: Boots@1
+    #- task: Bash@3
     #  inputs:
-    #    uri: 'https://download.mono-project.com/archive/6.4.0/macos-10-universal/MonoFramework-MDK-6.4.0.198.macos10.xamarin.universal.pkg'
+    #    targetType: 'inline'
+    #    script: 'sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_18_1'
+
+    - task: Boots@1
+      inputs:
+        uri: 'https://download.mono-project.com/archive/6.6.0/macos-10-universal/MonoFramework-MDK-6.6.0.161.macos10.xamarin.universal.pkg'
 
     #- task: Boots@1
     #  inputs:
     #    uri: 'https://download.visualstudio.microsoft.com/download/pr/5a678460-107f-4fcf-8764-80419bc874a0/3f78c6826132f6f8569524690322adba/xamarin.ios-13.8.1.17.pkg'
 
-    - task: XamariniOS@2
-      inputs:
-        solutionFile: '**/*TailwindTraders.iOS.sln'
-        configuration: '$(BuildConfiguration)'
-        packageApp: true
-        runNugetRestore: false
-        signingIdentity: 'iPhone Developer: Matthew Soucoup (HQER4F7A36)'
-        signingProvisioningProfileID: '8e1eb329-d4c3-42de-9182-a7a5ba712866'
+    #- task: XamariniOS@2
+    #  inputs:
+    #    solutionFile: '**/*TailwindTraders.iOS.sln'
+    #    configuration: '$(BuildConfiguration)'
+    #    packageApp: true
+    #    runNugetRestore: false
+    #    signingIdentity: 'iPhone Developer: Matthew Soucoup (HQER4F7A36)'
+    #    signingProvisioningProfileID: '8e1eb329-d4c3-42de-9182-a7a5ba712866'
 
     
