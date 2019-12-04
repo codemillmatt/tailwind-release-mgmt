@@ -83,6 +83,13 @@ jobs:
       inputs:
         provisioningProfileLocation: 'secureFiles'
         provProfileSecureFile: 'Tailwind_Traders_Cleaned_DEV.mobileprovision'
+    
+    - task: NuGetCommand@2
+      inputs:
+        command: 'restore'
+        restoreSolution: '**/*TailwindTraders.iOS.sln'
+        feedsToUse: 'select'
+
     - task: Boots@1
       inputs:
         uri: 'https://download.mono-project.com/archive/6.4.0/macos-10-universal/MonoFramework-MDK-6.4.0.198.macos10.xamarin.universal.pkg'
