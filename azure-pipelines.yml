@@ -58,6 +58,14 @@ jobs:
       inputs:
         filePath: '$(BUILD.SOURCESDIRECTORY)/appcenter-secrets-replace.sh'
 
+    - task: android-manifest-version@1
+      displayName: 'Bump Droid version numbers'
+      inputs:
+        sourcePath: '**/*AndroidManifest.xml'
+        versionCodeOption: 'buildid'
+        versionCode: '$(Build.BuildId)'
+        printFile: true
+
     - task: XamarinAndroid@1
       displayName: 'Build Droid'
       inputs:
@@ -75,6 +83,7 @@ jobs:
         apksignerKeystorePassword: '$(keystorePassword)'
         apksignerKeystoreAlias: 'TailwindAppCenter'
         apksignerKeyPassword: '$(keystorePassword)'
+      condition: succeeded()
 
     - task: CopyFiles@2
       displayName: 'Copy APK file to staging'
