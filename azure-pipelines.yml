@@ -2,6 +2,7 @@ variables:
   BuildConfiguration: 'Release'
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: trued
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  skipComponentGovernanceDetection: true
 
 jobs:
   - job: 'AndroidBuild'
@@ -72,4 +73,22 @@ jobs:
     - task: NuGetToolInstaller@0
       displayName: 'Use NuGet 4.4.1'
       inputs:
-        versionSpec: 4.4.1           
+        versionSpec: 4.4.1
+    - task: InstallAppleCertificate@2
+      inputs:
+        certSecureFile: 'CodeMillDevelopment1.p12'
+        certPwd: 'coupon_stolen_armload'
+        keychain: 'temp'
+    - task: InstallAppleProvisioningProfile@1
+      inputs:
+        provisioningProfileLocation: 'secureFiles'
+        provProfileSecureFile: 'Tailwind_Traders_Cleaned_DEV.mobileprovision'
+    - task: Boots@1
+      inputs:
+        uri: 'https://download.mono-project.com/archive/6.4.0/macos-10-universal/MonoFramework-MDK-6.4.0.198.macos10.xamarin.universal.pkg'
+
+    - task: Boots@1
+      inputs:
+        uri: 'boots https://download.visualstudio.microsoft.com/download/pr/5a678460-107f-4fcf-8764-80419bc874a0/3f78c6826132f6f8569524690322adba/xamarin.ios-13.8.1.17.pkg'
+
+    
