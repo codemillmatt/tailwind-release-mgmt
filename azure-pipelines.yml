@@ -73,7 +73,7 @@ jobs:
         apkFiles: '**/*.apk'
         apksignerKeystoreFile: 'TailwindAppCenter2.keystore'
         apksignerKeystorePassword: '$(keystorePassword)'
-        apksignerKeystoreAlias: 'TailwindAppCeter'
+        apksignerKeystoreAlias: 'TailwindAppCenter'
         apksignerKeyPassword: '$(keystorePassword)'
 
     - task: CopyFiles@2
