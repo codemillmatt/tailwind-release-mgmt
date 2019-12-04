@@ -89,6 +89,6 @@ jobs:
 
     - task: Boots@1
       inputs:
-        uri: 'boots https://download.visualstudio.microsoft.com/download/pr/5a678460-107f-4fcf-8764-80419bc874a0/3f78c6826132f6f8569524690322adba/xamarin.ios-13.8.1.17.pkg'
+        uri: 'https://download.visualstudio.microsoft.com/download/pr/5a678460-107f-4fcf-8764-80419bc874a0/3f78c6826132f6f8569524690322adba/xamarin.ios-13.8.1.17.pkg'
 
     
