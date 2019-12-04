@@ -90,6 +90,11 @@ jobs:
         restoreSolution: '**/*TailwindTraders.iOS.sln'
         feedsToUse: 'select'
 
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: 'sudo $AGENT_HOMEDIRECTORY/scripts/select-xamarin-sdk.sh 5_18_1'
+
     #- task: Boots@1
     #  inputs:
     #    uri: 'https://download.mono-project.com/archive/6.4.0/macos-10-universal/MonoFramework-MDK-6.4.0.198.macos10.xamarin.universal.pkg'
