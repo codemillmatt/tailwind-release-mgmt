@@ -21,13 +21,19 @@
 
     <Shell.ItemTemplate>
         <DataTemplate>
-            <Label Text="{Binding Title}" FontSize="Body" TextColor="{StaticResource AccentColor}" Padding="20,0" />
+            <Label Text="{Binding Title}" FontSize="Large" TextColor="{StaticResource AccentColor}" Padding="20,10" />
         </DataTemplate>
     </Shell.ItemTemplate>
+
+    <Shell.MenuItemTemplate>
+        <DataTemplate>
+            
+        </DataTemplate>
+    </Shell.MenuItemTemplate>
     
     <ShellContent Title="Shopping" ContentTemplate="{DataTemplate pages:ShoppingHomePage}"/>
 
-    <MenuItem Text="Home Appliances"
+    <MenuItem Text="Home Appliances" IconImageSource=""
               Command="{Binding NavigateToProductCategoryCommand}" CommandParameter="homeappliances" />
     <MenuItem Text="Sink" 
               Command="{Binding NavigateToProductCategoryCommand}" CommandParameter="sink"/>
@@ -41,9 +47,10 @@
               Command="{Binding NavigateToProductCategoryCommand}" CommandParameter="kitchen"/>
     <MenuItem Text="DIY Tools" 
               Command="{Binding NavigateToProductCategoryCommand}" CommandParameter="diytools"/>
-    
-    <ShellContent Title="Wishlist" ContentTemplate="{DataTemplate pages:WishlistPage}"/>
-    <ShellContent Title="Settings" ContentTemplate="{DataTemplate pages:SettingsPage}"/>
+
+    <ShellContent Title="Wishlist" ContentTemplate="{DataTemplate pages:WishlistPage}" />
+
+    <ShellContent Title="Settings" ContentTemplate="{DataTemplate pages:SettingsPage}" />
     
     <MenuItem Text="Logout"/>
     
