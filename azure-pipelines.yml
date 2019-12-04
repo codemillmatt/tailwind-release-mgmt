@@ -91,4 +91,13 @@ jobs:
       inputs:
         uri: 'https://download.visualstudio.microsoft.com/download/pr/5a678460-107f-4fcf-8764-80419bc874a0/3f78c6826132f6f8569524690322adba/xamarin.ios-13.8.1.17.pkg'
 
+    - task: XamariniOS@2
+      inputs:
+        solutionFile: '**/*TailwindTraders.iOS.sln'
+        configuration: '$(BuildConfiguratino)'
+        packageApp: true
+        runNugetRestore: false
+        signingIdentity: 'iPhone Developer: Matthew Soucoup (HQER4F7A36)'
+        signingProvisioningProfileID: '8e1eb329-d4c3-42de-9182-a7a5ba712866'
+
     
