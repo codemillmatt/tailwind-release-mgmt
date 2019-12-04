@@ -1,53 +1,75 @@
-pool:
-  name: Azure Pipelines
-  vmImage: 'macos-latest'
-  demands:
-  - msbuild
-  - MSBuild
-  - Xamarin.Android
-  - JDK
-
 variables:
   BuildConfiguration: 'Release'
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: trued
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
-steps:
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.4.1'
-  inputs:
-    versionSpec: 4.4.1
+jobs:
+  - job: 'AndroidBuild'
+    pool:
+      name: Azure Pipelines
+      vmImage: 'macos-latest'
+      demands:
+        - msbuild
+        - MSBuild
+        - Xamarin.Android
+        - JDK
 
-- task: Boots@1
-  displayName: 'Install Android 16.3'
-  inputs:
-    uri: https://aka.ms/xamarin-android-commercial-d16-3-macos
+    steps:
+    - task: NuGetToolInstaller@0
+      displayName: 'Use NuGet 4.4.1'
+      inputs:
+        versionSpec: 4.4.1
 
-- task: MSBuild@1
-  displayName: 'Restore NuGets'
-  inputs:
-    solution: '**/*TailwindTraders.Mobile.Android.csproj'
-    configuration: '$(BuildConfiguration)'
-    msbuildArguments: '-t:Restore'
+    - task: Boots@1
+      displayName: 'Install Android 16.3'
+      inputs:
+        uri: https://aka.ms/xamarin-android-commercial-d16-3-macos
+      condition: succeeded()
 
-- task: XamarinAndroid@1
-  displayName: 'Build Droid'
-  inputs:
-    projectFile: '**/*TailwindTraders.Mobile.Android.csproj'
-    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
-    configuration: '$(BuildConfiguration)'
-    jdkOption: 'JDKVersion'
+    - task: MSBuild@1
+      displayName: 'Restore NuGets'
+      inputs:
+        solution: '**/*TailwindTraders.Mobile.Android.csproj'
+        configuration: '$(BuildConfiguration)'
+        msbuildArguments: '-t:Restore'
+      condition: succeeded()
 
-- task: CopyFiles@2
-  displayName: 'Copy APK file to staging'
-  inputs:
-    SourceFolder: '$(build.binariesdirectory)/$(BuildConfiguration)'
-    Contents: '**/*.apk'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: XamarinAndroid@1
+      displayName: 'Build Droid'
+      inputs:
+        projectFile: '**/*TailwindTraders.Mobile.Android.csproj'
+        outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
+        configuration: '$(BuildConfiguration)'
+        jdkOption: 'JDKVersion'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Android APK'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    - task: CopyFiles@2
+      displayName: 'Copy APK file to staging'
+      inputs:
+        SourceFolder: '$(build.binariesdirectory)/$(BuildConfiguration)'
+        Contents: '**/*.apk'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      condition: succeeded()
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Android APK'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+      condition: succeeded()
+
+  - job: 'iOSBuild'
+    pool:
+      name: Azure Pipelines
+      vmImage: 'macos-latest'
+      demands:
+        - msbuild
+        - MSBuild
+        - Xamarin.iOS
+        - xcode
+        
+    steps:
+    - task: NuGetToolInstaller@0
+      displayName: 'Use NuGet 4.4.1'
+      inputs:
+        versionSpec: 4.4.1           
