@@ -94,7 +94,7 @@ jobs:
     - task: XamariniOS@2
       inputs:
         solutionFile: '**/*TailwindTraders.iOS.sln'
-        configuration: '$(BuildConfiguratino)'
+        configuration: '$(BuildConfiguration)'
         packageApp: true
         runNugetRestore: false
         signingIdentity: 'iPhone Developer: Matthew Soucoup (HQER4F7A36)'
