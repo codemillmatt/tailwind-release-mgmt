@@ -79,7 +79,7 @@ jobs:
       displayName: 'Sign Android'
       inputs:
         apkFiles: '**/*.apk'
-        apksignerKeystoreFile: 'TailwindAppCenter2.keystore'
+        apksignerKeystoreFile: 'Tailwind.keystore'
         apksignerKeystorePassword: '$(keystorePassword)'
         apksignerKeystoreAlias: 'TailwindAppCenter'
         apksignerKeyPassword: '$(keystorePassword)'
