@@ -21,10 +21,10 @@ jobs:
       inputs:
         versionSpec: 4.4.1
 
-    - task: Boots@1
-      displayName: 'Install Android 16.3'
-      inputs:
-        uri: https://aka.ms/xamarin-android-commercial-d16-3-macos      
+   # - task: Boots@1
+   #   displayName: 'Install Android 16.3'
+   #   inputs:
+   #     uri: https://aka.ms/xamarin-android-commercial-d16-3-macos      
 
     - task: MSBuild@1
       displayName: 'Restore NuGets'
