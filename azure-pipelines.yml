@@ -81,7 +81,7 @@ jobs:
         apkFiles: '**/*.apk'
         apksignerKeystoreFile: 'Tailwind.keystore'
         apksignerKeystorePassword: '$(keystorePassword)'
-        apksignerKeystoreAlias: 'tailwind'
+        apksignerKeystoreAlias: 'Tailwind'
         apksignerKeyPassword: '$(keystorePassword)'
       condition: succeeded()
 
