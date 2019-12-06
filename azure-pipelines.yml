@@ -8,7 +8,7 @@ jobs:
   - job: 'AndroidBuild'
     pool:
       name: Azure Pipelines
-      vmImage: 'macos-latest'
+      vmImage: 'windows-latest'
       demands:
         - msbuild
         - MSBuild
@@ -17,9 +17,9 @@ jobs:
 
     steps:
     - task: NuGetToolInstaller@0
-      displayName: 'Use NuGet 4.4.1'
+      displayName: 'Use NuGet 5.4.0'
       inputs:
-        versionSpec: 4.4.1
+        versionSpec: 5.4.0
 
    # - task: Boots@1
    #   displayName: 'Install Android 16.3'
