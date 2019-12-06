@@ -83,6 +83,7 @@ jobs:
         apksignerKeystorePassword: '$(keystorePassword)'
         apksignerKeystoreAlias: 'Tailwind'
         apksignerKeyPassword: '$(keystorePassword)'
+        zipalign: true
       condition: succeeded()
 
     - task: CopyFiles@2
