@@ -47,16 +47,16 @@ jobs:
         TargetFolder: '$(Build.SourcesDirectory)/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android'
         OverWrite: true
 
-    - task: Bash@3
-      displayName: 'Catalog google-services.json'
-      inputs:
-        targetType: 'inline'
-        script: 'cat $(Build.SourcesDirectory)/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/google-services.json'
+    #- task: Bash@3
+    #  displayName: 'Catalog google-services.json'
+    #  inputs:
+    #    targetType: 'inline'
+    #    script: 'cat $(Build.SourcesDirectory)/src/TailwindTraders.Mobile/TailwindTraders.Mobile.Android/google-services.json'
 
-    - task: Bash@3
-      displayName: 'Copy over App Center secrets'
-      inputs:
-        filePath: '$(BUILD.SOURCESDIRECTORY)/appcenter-secrets-replace.sh'
+    #- task: Bash@3
+    #  displayName: 'Copy over App Center secrets'
+    #  inputs:
+    #    filePath: '$(BUILD.SOURCESDIRECTORY)/appcenter-secrets-replace.sh'
 
     - task: android-manifest-version@1
       displayName: 'Bump Droid version numbers'
