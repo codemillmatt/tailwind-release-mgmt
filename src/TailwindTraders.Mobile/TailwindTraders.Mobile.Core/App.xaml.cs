@@ -93,9 +93,6 @@ namespace TailwindTraders.Mobile
                     // Track that notification received
                     Analytics.TrackEvent("Push Received", analyticsData);
 
-                    var snack = DependencyService.Get<IXSnack>();
-                    //await snack.ShowMessageAsync("I'm here from a push");
-
                     if (!string.IsNullOrEmpty(e.Title))
                     {
                         await Shell.Current.DisplayAlert(e.Title, e.Message, "OK");
