@@ -41,32 +41,32 @@ namespace TailwindTraders.Mobile.iOS
             return base.FinishedLaunching(app, options);
         }
 
-        //public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
-        //{
-        //    Analytics.TrackEvent("iOS Registered - Remote Notifications");
-        //    Push.RegisteredForRemoteNotifications(deviceToken);
-        //}
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            Analytics.TrackEvent("iOS Registered - Remote Notifications");
+            Push.RegisteredForRemoteNotifications(deviceToken);
+        }
 
-        //public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
-        //{
-        //    Analytics.TrackEvent("iOS FAILED - Remote Notifications");
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            Analytics.TrackEvent("iOS FAILED - Remote Notifications");
 
-        //    Push.FailedToRegisterForRemoteNotifications(error);
-        //}
+            Push.FailedToRegisterForRemoteNotifications(error);
+        }
 
-        //public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, System.Action<UIBackgroundFetchResult> completionHandler)
-        //{
-        //    Analytics.TrackEvent("iOS Received - Remote Notifications");
+        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, System.Action<UIBackgroundFetchResult> completionHandler)
+        {
+            Analytics.TrackEvent("iOS Received - Remote Notifications");
 
-        //    var result = Push.DidReceiveRemoteNotification(userInfo);
-        //    if (result)
-        //    {
-        //        completionHandler(UIBackgroundFetchResult.NewData);
-        //    }
-        //    else
-        //    {
-        //        completionHandler(UIBackgroundFetchResult.NoData);
-        //    }
-        //}        
+            var result = Push.DidReceiveRemoteNotification(userInfo);
+            if (result)
+            {
+                completionHandler(UIBackgroundFetchResult.NewData);
+            }
+            else
+            {
+                completionHandler(UIBackgroundFetchResult.NoData);
+            }
+        }
     }
 }
